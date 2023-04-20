@@ -142,7 +142,7 @@ export interface Person {
   email?: string
   properties?: { [key: string]: any }
 
-  website?: {
+  website: {
     url: string
   }
 }
@@ -153,6 +153,9 @@ export const setPerson = (person: Person) => {
   // The only required information is a id
   if (!person.id) {
     throw new Error('person.id is required')
+  }
+  if (!person?.website?.url) {
+    throw new Error('person.website.url is required')
   }
 
   // Check if the person is already set
@@ -178,7 +181,13 @@ export const setPerson = (person: Person) => {
       // Add the token to the header
       API_TOKEN: token,
     },
-    body: JSON.stringify({ person, sessionId }),
+    body: JSON.stringify({
+      person: {
+        ...person,
+        website: { url: window.location.origin },
+      },
+      sessionId,
+    }),
   })
 }
 
