@@ -176,7 +176,7 @@ export const setPerson = (person: Person) => {
       'Content-Type': 'application/json',
 
       // Add the token to the header
-      API_KEY: token,
+      API_TOKEN: token,
     },
     body: JSON.stringify({ person, sessionId }),
   })
