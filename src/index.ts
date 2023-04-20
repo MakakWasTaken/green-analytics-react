@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
-let apiToken: string | undefined
-
 const getToken = () => {
-  if (!apiToken) {
-    throw new Error('Token is not set')
+  const token = sessionStorage.getItem('green-analytics-token') || undefined
+  if (!token) {
+    throw new Error('No token found')
   }
-  return apiToken
+  return token
 }
 
 const getCookie = (name: string) => {
@@ -70,7 +68,8 @@ export const init = (token: string) => {
     return
   }
 
-  apiToken = token
+  // Store the token in the sessionStorage to make identifying easier
+  sessionStorage.setItem('green-analytics-token', token)
 
   const scripts = document.getElementsByTagName('script')
 
