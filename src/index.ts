@@ -141,10 +141,6 @@ export interface Person {
   name?: string
   email?: string
   properties?: { [key: string]: any }
-
-  website: {
-    url: string
-  }
 }
 
 export const setPerson = (person: Person) => {
@@ -153,9 +149,6 @@ export const setPerson = (person: Person) => {
   // The only required information is a id
   if (!person.id) {
     throw new Error('person.id is required')
-  }
-  if (!person?.website?.url) {
-    throw new Error('person.website.url is required')
   }
 
   // Check if the person is already set
