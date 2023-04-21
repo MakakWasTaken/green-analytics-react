@@ -4,6 +4,5 @@
   "trailingComma": "all",
   "arrowParens": "always",
   "semi": false,
-  "endOfLine": "auto",
-  "organizeImportsSkipDestructiveCodeActions": false
+  "endOfLine": "auto"
 }
