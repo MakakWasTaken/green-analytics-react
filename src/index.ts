@@ -191,10 +191,9 @@ export interface Event {
   website?: {
     url: string
   }
-  properties?: { [key: string]: any }
 }
 
-export const logEvent = (event: Event) => {
+export const logEvent = (event: Event, properties?: { [key: string]: any }) => {
   if (navigator.doNotTrack === '1') {
     return
   }
@@ -220,6 +219,6 @@ export const logEvent = (event: Event) => {
       // Add the token to the header
       API_TOKEN: token,
     },
-    body: JSON.stringify({ event, sessionId, personId }),
+    body: JSON.stringify({ event, properties, sessionId, personId }),
   })
 }
