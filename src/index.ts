@@ -1,4 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
+export interface Person {
+  id: string
+  name?: string
+  email?: string
+  properties?: { [key: string]: any }
+}
+
+export interface Event {
+  name: string
+  type: string
+
+  website?: {
+    url: string
+  }
+}
+
 const getToken = () => {
   const token = sessionStorage.getItem('green-analytics-token') || undefined
   if (!token) {
@@ -62,7 +79,7 @@ const getMobile = () => {
   }
 }
 
-export const init = (token: string) => {
+export const initGA = (token: string) => {
   // Check if doNotTrack is enabled, if so cancel the script
   if (navigator.doNotTrack === '1') {
     return
@@ -91,27 +108,28 @@ export const init = (token: string) => {
   )
 
   // Send the pageview event
-  const event = {
+  const event: Event = {
     name: document.title,
     type: 'pageview',
 
     website: {
       url: window.location.origin,
     },
-    properties: {
-      referrer: document.referrer,
-      // Add available information about the person agent
-      language: navigator.language,
-      userAgent: navigator.userAgent,
-      browser: getBrowser(),
-      os: getOS(),
-      mobile: getMobile(),
-
-      urls: otherScripts,
-    },
   }
 
-  logEvent(event)
+  const properties: { [key: string]: any } = {
+    referrer: document.referrer,
+    // Add available information about the person agent
+    language: navigator.language,
+    userAgent: navigator.userAgent,
+    browser: getBrowser(),
+    os: getOS(),
+    mobile: getMobile(),
+
+    urls: otherScripts,
+  }
+
+  logEvent(event, properties)
 }
 
 const getSessionId = () => {
@@ -134,13 +152,6 @@ const getSessionId = () => {
   }
 
   return sessionId
-}
-
-export interface Person {
-  id: string
-  name?: string
-  email?: string
-  properties?: { [key: string]: any }
 }
 
 export const setPerson = (person: Person) => {
@@ -182,15 +193,6 @@ export const setPerson = (person: Person) => {
       sessionId,
     }),
   })
-}
-
-export interface Event {
-  name: string
-  type: string
-
-  website?: {
-    url: string
-  }
 }
 
 export const logEvent = (event: Event, properties?: { [key: string]: any }) => {
