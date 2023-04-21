@@ -7,13 +7,12 @@
   "author": "Markus Moltke <makakwastaken@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -rf ./lib ./dist",
+    "clean": "rm -rf ./build",
     "lint": "eslint --fix . && prettier --write .",
     "build": "tsc -b",
     "check": "npm run check:tsc",
     "check:tsc": "tsc -p . --noEmit",
-    "pretest": "yarn build",
-    "prepare": "yarn lint && yarn build"
+    "prepare": "npm run clean && npm run build"
   },
   "devDependencies": {
     "@types/node": "^18.15.12",
