@@ -13,7 +13,7 @@
     "check": "npm run check:tsc",
     "check:tsc": "tsc -p . --noEmit",
     "pretest": "yarn build",
-    "prepack": "yarn lint && yarn build"
+    "prepare": "yarn lint && yarn build"
   },
   "devDependencies": {
     "@types/node": "^18.15.12",
