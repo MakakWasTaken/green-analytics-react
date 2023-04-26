@@ -14,6 +14,8 @@ export interface Event {
   website?: {
     url: string
   }
+
+  properties?: { [key: string]: any }
 }
 
 const getToken = () => {
@@ -96,14 +98,17 @@ export const initGA = (token: string) => {
     website: {
       url: window.location.origin,
     },
+
+    properties: {
+      path: window.location.pathname,
+      referrer: document.referrer,
+    },
   }
 
-  const properties: { [key: string]: any } = {
+  const userProperties: { [key: string]: any } = {
     browser: getBrowser(),
     os: getOS(),
     mobile: getMobile(),
-    path: window.location.pathname,
-    referrer: document.referrer,
 
     // Get the screen size
     width: window.innerWidth,
@@ -119,7 +124,7 @@ export const initGA = (token: string) => {
     userAgent: navigator.userAgent,
   }
 
-  logEvent(event, properties)
+  logEvent(event, userProperties)
 }
 
 const getSessionId = () => {
@@ -185,7 +190,10 @@ export const setPerson = (person: Person) => {
   })
 }
 
-export const logEvent = (event: Event, properties?: { [key: string]: any }) => {
+export const logEvent = (
+  event: Event,
+  userProperties?: { [key: string]: any },
+) => {
   if (navigator.doNotTrack === '1') {
     return
   }
@@ -211,6 +219,6 @@ export const logEvent = (event: Event, properties?: { [key: string]: any }) => {
       // Add the token to the header
       API_TOKEN: token,
     },
-    body: JSON.stringify({ event, properties, sessionId, personId }),
+    body: JSON.stringify({ event, userProperties, sessionId, personId }),
   })
 }
