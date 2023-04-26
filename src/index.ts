@@ -88,25 +88,6 @@ export const initGA = (token: string) => {
   // Store the token in the sessionStorage to make identifying easier
   sessionStorage.setItem('green-analytics-token', token)
 
-  const scripts = document.getElementsByTagName('script')
-
-  // Get all scripts that are not green-analytics.js
-  let otherScripts: string[] = []
-  for (let i = 0; i < scripts.length; i++) {
-    if (
-      scripts[i].src.startsWith('http') &&
-      !scripts[i].src.includes('green-analytics.js')
-    ) {
-      const url = new URL(scripts[i].src)
-      otherScripts.push(url.origin)
-    }
-  }
-
-  // Remove duplicates from otherScripts
-  otherScripts = otherScripts.filter(
-    (value, index, self) => self.indexOf(value) === index,
-  )
-
   // Send the pageview event
   const event: Event = {
     name: document.title,
@@ -118,15 +99,24 @@ export const initGA = (token: string) => {
   }
 
   const properties: { [key: string]: any } = {
-    referrer: document.referrer,
-    // Add available information about the person agent
-    language: navigator.language,
-    userAgent: navigator.userAgent,
     browser: getBrowser(),
     os: getOS(),
     mobile: getMobile(),
+    path: window.location.pathname,
+    referrer: document.referrer,
 
-    urls: otherScripts,
+    // Get the screen size
+    width: window.innerWidth,
+    height: window.innerHeight,
+
+    // Get the timezone
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+
+    // Get the language
+    language: navigator.language,
+
+    // Get the user agent
+    userAgent: navigator.userAgent,
   }
 
   logEvent(event, properties)
