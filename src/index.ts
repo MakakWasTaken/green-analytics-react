@@ -172,7 +172,7 @@ export const setPerson = (person: Person) => {
   const sessionId = getSessionId()
 
   // Send the person to the server
-  fetch('https://green-analytics.dk/api/database/events/setPerson', {
+  fetch('https://green-analytics.com/api/database/events/setPerson', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -211,7 +211,7 @@ export const logEvent = (
   }
 
   // Send the event to the server
-  fetch('https://green-analytics.dk/api/database/events/logEvent', {
+  fetch('https://green-analytics.com/api/database/events/logEvent', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
