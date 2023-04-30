@@ -19,7 +19,7 @@ export interface Event {
 }
 
 const getToken = () => {
-  const token = sessionStorage.getItem('green-analytics-token') || undefined
+  const token = getFromStorage('green-analytics-token')
   if (!token) {
     throw new Error('No token found')
   }
@@ -32,6 +32,27 @@ const getCookie = (name: string) => {
     if (cookie.startsWith(name)) {
       return cookie.split('=')[1]
     }
+  }
+}
+
+/**
+ * Determine the correct way to get something from storage and get it
+ * @param name The name of the item to get
+ * @returns The item from storage
+ */
+const getFromStorage = (name: string): string | null => {
+  if (navigator.cookieEnabled) {
+    return getCookie(name) || null
+  } else {
+    return localStorage.getItem(name) || null
+  }
+}
+
+const setInStorage = (name: string, value: string) => {
+  if (navigator.cookieEnabled) {
+    document.cookie = `${name}=${value}`
+  } else {
+    return localStorage.setItem(name, value)
   }
 }
 
@@ -87,8 +108,8 @@ export const initGA = (token: string) => {
     return
   }
 
-  // Store the token in the sessionStorage to make identifying easier
-  sessionStorage.setItem('green-analytics-token', token)
+  // Store the token in the localStorage to make identifying easier
+  setInStorage('green-analytics-token', token)
 
   // Send the pageview event
   const event: Event = {
@@ -128,22 +149,11 @@ export const initGA = (token: string) => {
 }
 
 const getSessionId = () => {
-  let sessionId: string | undefined
-  if (navigator.cookieEnabled) {
-    sessionId = getCookie('green-analytics-session-id')
-  }
+  let sessionId = getFromStorage('green-analytics-session-id')
+
   if (!sessionId) {
-    // Check if the person is already set
-    sessionId =
-      sessionStorage.getItem('green-analytics-session-id') || undefined
-    if (!sessionId) {
-      sessionId = Math.random().toString(36).substring(2, 15)
-      if (navigator.cookieEnabled) {
-        document.cookie = `green-analytics-session-id=${sessionId}`
-      } else {
-        sessionStorage.setItem('green-analytics-session-id', sessionId)
-      }
-    }
+    sessionId = Math.random().toString(36).substring(2, 15)
+    setInStorage('green-analytics-session-id', sessionId)
   }
 
   return sessionId
@@ -158,16 +168,12 @@ export const setPerson = (person: Person) => {
   }
 
   // Check if the person is already set
-  if (sessionStorage.getItem('green-analytics-person-id') === person.id) {
+  if (getFromStorage('green-analytics-person-id') === person.id) {
     return
   }
 
-  // Store the person id in the sessionStorage to make identifying easier
-  if (navigator.cookieEnabled) {
-    document.cookie = `green-analytics-person-id=${person.id}`
-  } else {
-    sessionStorage.setItem('green-analytics-person-id', person.id)
-  }
+  // Store the person id in the localStorage to make identifying easier
+  setInStorage('green-analytics-person-id', person.id)
 
   const sessionId = getSessionId()
 
@@ -201,14 +207,7 @@ export const logEvent = (
   const token = getToken()
 
   const sessionId = getSessionId()
-  let personId: string | undefined
-  if (navigator.cookieEnabled) {
-    personId = getCookie('green-analytics-person-id')
-  }
-  if (!personId) {
-    // If a person id is set sent it with the request
-    personId = sessionStorage.getItem('green-analytics-person-id') || undefined
-  }
+  const personId = getFromStorage('green-analytics-person-id')
 
   // Send the event to the server
   fetch('https://green-analytics.com/api/database/events/logEvent', {
