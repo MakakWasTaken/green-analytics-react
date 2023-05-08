@@ -108,44 +108,48 @@ export const initGA = (token: string) => {
     return
   }
 
-  // Store the token in the localStorage to make identifying easier
-  setInStorage('green-analytics-token', token)
+  try {
+    // Store the token in the localStorage to make identifying easier
+    setInStorage('green-analytics-token', token)
 
-  // Send the pageview event
-  const event: Event = {
-    name: document.title,
-    type: 'pageview',
+    // Send the pageview event
+    const event: Event = {
+      name: document.title,
+      type: 'pageview',
 
-    website: {
-      url: window.location.origin,
-    },
+      website: {
+        url: window.location.origin,
+      },
 
-    properties: {
-      path: window.location.pathname,
-      referrer: document.referrer,
-    },
+      properties: {
+        path: window.location.pathname,
+        referrer: document.referrer,
+      },
+    }
+
+    const userProperties: { [key: string]: any } = {
+      browser: getBrowser(),
+      os: getOS(),
+      mobile: getMobile(),
+
+      // Get the screen size
+      width: window.innerWidth,
+      height: window.innerHeight,
+
+      // Get the timezone
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+
+      // Get the language
+      language: navigator.language,
+
+      // Get the user agent
+      userAgent: navigator.userAgent,
+    }
+
+    logEvent(event, userProperties)
+  } catch (error) {
+    console.error(error)
   }
-
-  const userProperties: { [key: string]: any } = {
-    browser: getBrowser(),
-    os: getOS(),
-    mobile: getMobile(),
-
-    // Get the screen size
-    width: window.innerWidth,
-    height: window.innerHeight,
-
-    // Get the timezone
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-
-    // Get the language
-    language: navigator.language,
-
-    // Get the user agent
-    userAgent: navigator.userAgent,
-  }
-
-  logEvent(event, userProperties)
 }
 
 const getSessionId = () => {
@@ -160,40 +164,44 @@ const getSessionId = () => {
 }
 
 export const setPerson = (person: Person) => {
-  const token = getToken()
+  try {
+    const token = getToken()
 
-  // The only required information is a id
-  if (!person.id) {
-    throw new Error('person.id is required')
-  }
+    // The only required information is a id
+    if (!person.id) {
+      throw new Error('person.id is required')
+    }
 
-  // Check if the person is already set
-  if (getFromStorage('green-analytics-person-id') === person.id) {
-    return
-  }
+    // Check if the person is already set
+    if (getFromStorage('green-analytics-person-id') === person.id) {
+      return
+    }
 
-  // Store the person id in the localStorage to make identifying easier
-  setInStorage('green-analytics-person-id', person.id)
+    // Store the person id in the localStorage to make identifying easier
+    setInStorage('green-analytics-person-id', person.id)
 
-  const sessionId = getSessionId()
+    const sessionId = getSessionId()
 
-  // Send the person to the server
-  fetch('https://green-analytics.com/api/database/events/setPerson', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+    // Send the person to the server
+    fetch('https://green-analytics.com/api/database/events/setPerson', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
 
-      // Add the token to the header
-      API_TOKEN: token,
-    },
-    body: JSON.stringify({
-      person: {
-        ...person,
-        website: { url: window.location.origin },
+        // Add the token to the header
+        API_TOKEN: token,
       },
-      sessionId,
-    }),
-  })
+      body: JSON.stringify({
+        person: {
+          ...person,
+          website: { url: window.location.origin },
+        },
+        sessionId,
+      }),
+    })
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 export const logEvent = (
@@ -204,20 +212,24 @@ export const logEvent = (
     return
   }
 
-  const token = getToken()
+  try {
+    const token = getToken()
 
-  const sessionId = getSessionId()
-  const personId = getFromStorage('green-analytics-person-id')
+    const sessionId = getSessionId()
+    const personId = getFromStorage('green-analytics-person-id')
 
-  // Send the event to the server
-  fetch('https://green-analytics.com/api/database/events/logEvent', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+    // Send the event to the server
+    fetch('https://green-analytics.com/api/database/events/logEvent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
 
-      // Add the token to the header
-      API_TOKEN: token,
-    },
-    body: JSON.stringify({ event, userProperties, sessionId, personId }),
-  })
+        // Add the token to the header
+        API_TOKEN: token,
+      },
+      body: JSON.stringify({ event, userProperties, sessionId, personId }),
+    })
+  } catch (error) {
+    console.error(error)
+  }
 }

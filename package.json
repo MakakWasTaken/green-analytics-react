@@ -1,18 +1,17 @@
 {
-  "name": "green-analytics-react",
+  "name": "green-analytics-js",
   "version": "1.0.12",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "repository": "git@github.com:MakakWasTaken/green-analytics-react.git",
+  "repository": "git@github.com:MakakWasTaken/green-analytics-js.git",
   "author": "Markus Moltke <makakwastaken@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -rf ./build",
     "lint": "eslint --fix . && prettier --write .",
     "build": "tsc -b",
     "check": "npm run check:tsc",
     "check:tsc": "tsc -p . --noEmit",
-    "prepare": "npm run clean && npm run build"
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^18.15.12",
