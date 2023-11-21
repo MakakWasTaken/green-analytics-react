@@ -27,6 +27,6 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.1.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.3.2"
   }
 }
