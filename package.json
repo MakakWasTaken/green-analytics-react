@@ -1,6 +1,6 @@
 {
   "name": "green-analytics-js",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "repository": "git@github.com:MakakWasTaken/green-analytics-js.git",
