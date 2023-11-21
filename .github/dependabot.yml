@@ -10,7 +10,6 @@ updates:
     schedule:
       interval: 'weekly'
     target-branch: "develop"
-
     commit-message:
       prefix: ":arrow_up: upgrade"
       prefix-development: ":truck: chore"
