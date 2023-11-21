@@ -165,7 +165,10 @@ const getSessionId = () => {
   let sessionId = getFromStorage('green-analytics-session-id')
 
   if (!sessionId) {
-    sessionId = Math.random().toString(36).substring(2, 15)
+    sessionId = window.crypto.getRandomValues(new Uint32Array(1))[0].toString()
+    if (!sessionId) {
+      throw new Error('Could not generate sessionId')
+    }
     setInStorage('green-analytics-session-id', sessionId)
   }
 
