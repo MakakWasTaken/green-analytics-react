@@ -163,7 +163,7 @@ const getSessionId = () => {
   return sessionId
 }
 
-export const setPerson = (person: Person) => {
+export const setPerson = async (person: Person) => {
   try {
     const token = getToken()
 
@@ -183,28 +183,33 @@ export const setPerson = (person: Person) => {
     const sessionId = getSessionId()
 
     // Send the person to the server
-    fetch('https://green-analytics.com/api/database/events/setPerson', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      'https://green-analytics.com/api/database/events/setPerson',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
 
-        // Add the token to the header
-        API_TOKEN: token,
-      },
-      body: JSON.stringify({
-        person: {
-          ...person,
-          website: { url: window.location.origin },
+          // Add the token to the header
+          API_TOKEN: token,
         },
-        sessionId,
-      }),
-    })
+        body: JSON.stringify({
+          person: {
+            ...person,
+            website: { url: window.location.origin },
+          },
+          sessionId,
+        }),
+      },
+    )
+
+    return response.json()
   } catch (err) {
     console.error(err)
   }
 }
 
-export const logEvent = (
+export const logEvent = async (
   event: Event,
   userProperties?: { [key: string]: any },
 ) => {
@@ -219,16 +224,21 @@ export const logEvent = (
     const personId = getFromStorage('green-analytics-person-id')
 
     // Send the event to the server
-    fetch('https://green-analytics.com/api/database/events/logEvent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      'https://green-analytics.com/api/database/events/logEvent',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
 
-        // Add the token to the header
-        API_TOKEN: token,
+          // Add the token to the header
+          API_TOKEN: token,
+        },
+        body: JSON.stringify({ event, userProperties, sessionId, personId }),
       },
-      body: JSON.stringify({ event, userProperties, sessionId, personId }),
-    })
+    )
+
+    return response.json()
   } catch (error) {
     console.error(error)
   }
