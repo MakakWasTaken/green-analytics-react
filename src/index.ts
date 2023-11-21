@@ -18,6 +18,11 @@ export interface Event {
   properties?: { [key: string]: any }
 }
 
+export interface GAResponse {
+  ok: boolean
+  message: string
+}
+
 const getToken = () => {
   const token = getFromStorage('green-analytics-token')
   if (!token) {
@@ -102,7 +107,9 @@ const getMobile = () => {
   }
 }
 
-export const initGA = (token: string) => {
+export const initGA = async (
+  token: string,
+): Promise<GAResponse | undefined> => {
   // Check if doNotTrack is enabled, if so cancel the script
   if (navigator.doNotTrack === '1') {
     return
@@ -146,7 +153,9 @@ export const initGA = (token: string) => {
       userAgent: navigator.userAgent,
     }
 
-    logEvent(event, userProperties)
+    const response = await logEvent(event, userProperties)
+
+    return response as GAResponse
   } catch (error) {
     console.error(error)
   }
@@ -163,7 +172,9 @@ const getSessionId = () => {
   return sessionId
 }
 
-export const setPerson = async (person: Person) => {
+export const setPerson = async (
+  person: Person,
+): Promise<GAResponse | undefined> => {
   try {
     const token = getToken()
 
@@ -203,7 +214,7 @@ export const setPerson = async (person: Person) => {
       },
     )
 
-    return response.json()
+    return (await response.json()) as GAResponse
   } catch (err) {
     console.error(err)
   }
@@ -212,7 +223,7 @@ export const setPerson = async (person: Person) => {
 export const logEvent = async (
   event: Event,
   userProperties?: { [key: string]: any },
-) => {
+): Promise<GAResponse | undefined> => {
   if (navigator.doNotTrack === '1') {
     return
   }
@@ -238,7 +249,7 @@ export const logEvent = async (
       },
     )
 
-    return response.json()
+    return (await response.json()) as GAResponse
   } catch (error) {
     console.error(error)
   }

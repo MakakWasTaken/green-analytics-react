@@ -4,8 +4,8 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "repository": "git@github.com:MakakWasTaken/green-analytics-js.git",
-  "author": "Markus Moltke <makakwastaken@gmail.com>",
-  "license": "MIT",
+  "author": "Markus Moltke <markus@green-analytics.com>",
+  "license": "MPL",
   "scripts": {
     "build": "tsc -b",
     "check": "npm run check:tsc",
