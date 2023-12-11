@@ -48,14 +48,13 @@ const getCookie = (name: string) => {
 const getFromStorage = (name: string): string | null => {
   if (navigator.cookieEnabled) {
     return getCookie(name) || null
-  } else {
-    return localStorage.getItem(name) || null
   }
+  return localStorage.getItem(name) || null
 }
 
 const setInStorage = (name: string, value: string) => {
   if (navigator.cookieEnabled) {
-    document.cookie = `${name}=${value}`
+    document.cookie = `${name}=${value};path=/`
   } else {
     return localStorage.setItem(name, value)
   }
@@ -68,43 +67,45 @@ const getBrowser = () => {
   const userAgent = navigator.userAgent.toLowerCase()
   if (userAgent.match(/chrome|chromium|crios/)) {
     return 'Chrome'
-  } else if (userAgent.match(/firefox|fxios/)) {
-    return 'Firefox'
-  } else if (userAgent.match(/safari/)) {
-    return 'Safari'
-  } else if (userAgent.match(/opr\//)) {
-    return 'Opera'
-  } else if (userAgent.match(/edg/)) {
-    return 'Edge'
-  } else {
-    return 'Other'
   }
+  if (userAgent.match(/firefox|fxios/)) {
+    return 'Firefox'
+  }
+  if (userAgent.match(/safari/)) {
+    return 'Safari'
+  }
+  if (userAgent.match(/opr\//)) {
+    return 'Opera'
+  }
+  if (userAgent.match(/edg/)) {
+    return 'Edge'
+  }
+  return 'Other'
 }
 
 const getOS = () => {
   const userAgent = navigator.userAgent.toLowerCase()
   if (userAgent.match(/windows/)) {
     return 'Windows'
-  } else if (userAgent.match(/macintosh/)) {
-    return 'Mac'
-  } else if (userAgent.match(/linux/) || userAgent.match(/x11/)) {
-    return 'Linux'
-  } else if (userAgent.match(/iphone/)) {
-    return 'iOS'
-  } else if (userAgent.match(/android/)) {
-    return 'Android'
-  } else {
-    return 'Other'
   }
+  if (userAgent.match(/macintosh/)) {
+    return 'Mac'
+  }
+  if (userAgent.match(/linux/) || userAgent.match(/x11/)) {
+    return 'Linux'
+  }
+  if (userAgent.match(/iphone/)) {
+    return 'iOS'
+  }
+  if (userAgent.match(/android/)) {
+    return 'Android'
+  }
+  return 'Other'
 }
 
 const getMobile = () => {
   const userAgent = navigator.userAgent.toLowerCase()
-  if (userAgent.match(/mobile/)) {
-    return true
-  } else {
-    return false
-  }
+  return userAgent.match(/mobile/)
 }
 
 export const initGA = async (
@@ -257,3 +258,21 @@ export const logEvent = async (
     console.error(error)
   }
 }
+
+// If a script tag is used, load the plugin
+const scripts = document.getElementsByTagName('script')
+for (let i = 0; i < scripts.length; i++) {
+  // Check if any of the script files contains the green-analytics file. If so, initialize the script using the provided token.
+  if (scripts[i].src.includes('green-analytics.js')) {
+    const token = scripts[i].getAttribute('data-token')
+
+    if (!token) {
+      throw new Error(
+        'data-token needs to be set on the green-analytics script tag',
+      )
+    }
+    break
+  }
+}
+
+// If not script tag is provided, await manual initialization of the plugin.
