@@ -5,7 +5,7 @@
   "types": "build/index.d.ts",
   "repository": "git@github.com:MakakWasTaken/green-analytics-js.git",
   "author": "Markus Moltke <markus@green-analytics.com>",
-  "license": "MPL",
+  "license": "MPL-2.0",
   "scripts": {
     "build": "tsc -b",
     "check": "npm run check:tsc",
@@ -23,10 +23,10 @@
     "@biomejs/biome": "1.4.1",
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
-    "@types/node": "^20.10.3",
+    "@types/node": "^20.10.4",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.3.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }
