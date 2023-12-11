@@ -257,3 +257,21 @@ export const logEvent = async (
     console.error(error)
   }
 }
+
+// If a script tag is used, load the plugin
+const scripts = document.getElementsByTagName('script')
+for (let i = 0; i < scripts.length; i++) {
+  // Check if any of the script files contains the green-analytics file. If so, initialize the script using the provided token.
+  if (scripts[i].src.includes('green-analytics.js')) {
+    const token = scripts[i].getAttribute('data-token')
+
+    if (!token) {
+      throw new Error(
+        'data-token needs to be set on the green-analytics script tag',
+      )
+    }
+    break
+  }
+}
+
+// If not script tag is provided, await manual initialization of the plugin.
