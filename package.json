@@ -1,6 +1,6 @@
 {
   "name": "green-analytics-js",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "repository": "git@github.com:MakakWasTaken/green-analytics-js.git",
@@ -11,14 +11,9 @@
     "browser:build": "browserify build/index.js > build/bundle.js",
     "check": "npm run check:tsc",
     "check:tsc": "tsc -p . --noEmit",
-    "lint": "biome format --write . && biome lint --apply .",
-    "lint:staged": "lint-staged",
+    "lint": "biome format --write . && biome lint --apply . --no-errors-on-unmatched",
     "prepublishOnly": "npm run build",
     "prepare": "husky install"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "biome format --write",
-    "*.{js,jsx,ts,tsx|json}": "biome lint --apply"
   },
   "devDependencies": {
     "@biomejs/biome": "1.4.1",
