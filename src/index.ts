@@ -274,6 +274,9 @@ if (typeof document !== 'undefined' && typeof window !== 'undefined') {
             'data-token needs to be set on the green-analytics script tag',
           )
         }
+
+        // Initialize the framework
+        initGA(token)
         break
       }
     }
