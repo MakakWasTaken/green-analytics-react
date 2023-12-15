@@ -4,7 +4,7 @@
  */
 
 // Typescript port of https://github.com/adamvleggett/drawdown
-const markdown = (src: string): string => {
+export const markdown = (src: string): string => {
   let tmpSrc = src
 
   const rx_lt = /</g
@@ -209,3 +209,5 @@ const markdown = (src: string): string => {
 
   return src.trim()
 }
+
+export default markdown

@@ -13,7 +13,7 @@
     "check:tsc": "tsc -p . --noEmit",
     "lint": "biome format --write . && biome lint --apply . --no-errors-on-unmatched",
     "prepublishOnly": "npm run build",
-    "prepare": "husky install && yarn build"
+    "prepack": "husky install && yarn build"
   },
   "devDependencies": {
     "@biomejs/biome": "1.4.1",
@@ -26,5 +26,6 @@
     "lint-staged": "^15.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }
