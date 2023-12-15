@@ -107,6 +107,10 @@ const getMobile = () => {
 }
 
 export const insertCookiePolicy = async () => {
+  if (typeof document === 'undefined') {
+    // We cannot insert the cookie policy if no DOM is found
+    return
+  }
   try {
     const cookiePolicyInsertionPoint = document.getElementById(
       'green-analytics-cookie-policy',
