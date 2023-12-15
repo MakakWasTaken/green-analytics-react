@@ -21,7 +21,7 @@ const markdown = (src: string): string => {
   const rx_code = /\n((```|~~~).*\n?(*?)\n?\2|(( {4}.*?\n)+))/g
   const rx_link = /((!?)\[(.*?)\]\((.*?)( ".*")?\)|\\([\\`*_{}\[\]()#+\-.!~]))/g
   const rx_table = /\n(( *\|.*?\| *\n)+)/g
-  const rx_thead = /^.*\n( *\|( *\:?-+\:?-+\:? *\|)* *\n|)/
+  const rx_thead = /^.*\n( *\|( *[\:\-]+ *\|)* *\n|)/
   const rx_row = /.*\n/g
   const rx_cell = /\||(.*?[^\\])\|/g
   const rx_heading = /(?=^|>|\n)([>\s]*?)(#{1,6}) (.*?)( #*)? *(?=\n|$)/g

@@ -39,3 +39,17 @@ jobs:
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  review-owner-pr:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.user.login == 'MakakWasTaken' }}
+    steps:
+      - name: Enable auto-merge for Owner PRs
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Approve owner pull requests
+        run: gh pr review $PR_URL --approve -b "I'm **approving** this pull request because **it was made by the owner**"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
