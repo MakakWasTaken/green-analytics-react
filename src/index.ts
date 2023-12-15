@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 export interface Person {
   id: string
   name?: string
@@ -26,7 +24,7 @@ export interface GAResponse {
 const getToken = () => {
   const token = getFromStorage('green-analytics-token')
   if (!token) {
-    throw new Error('No token found')
+    throw new Error('Green Analytics not initialized')
   }
   return token
 }
@@ -108,6 +106,38 @@ const getMobile = () => {
   return userAgent.match(/mobile/)
 }
 
+export const insertCookiePolicy = async () => {
+  try {
+    const cookiePolicyInsertionPoint = document.getElementById(
+      'green-analytics-cookie-policy',
+    )
+    if (cookiePolicyInsertionPoint) {
+      const token = getToken()
+      // If the element exists, load the cookie policy for this token
+      // Load the markdown policy from the website.
+      const response = await fetch(
+        'https://green-analytics.com/api/database/cookie-policy',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+
+            // Add the token to the header
+            API_TOKEN: token,
+          },
+        },
+      )
+
+      const markdownString = (await response.json()).content as string
+
+      // Convert the markdown to html and insert it.
+      cookiePolicyInsertionPoint.innerHTML = markdown(markdownString)
+    }
+  } catch (err) {
+    console.error('Failed inserting cookie policy', err)
+  }
+}
+
 export const initGA = async (
   token: string,
 ): Promise<GAResponse | undefined> => {
@@ -119,6 +149,9 @@ export const initGA = async (
   try {
     // Store the token in the localStorage to make identifying easier
     setInStorage('green-analytics-token', token)
+
+    // Check for cookie policy insertion point.
+    insertCookiePolicy()
 
     // Send the pageview event
     const event: Event = {
@@ -268,6 +301,7 @@ if (typeof document !== 'undefined' && typeof window !== 'undefined') {
       // Check if any of the script files contains the green-analytics file. If so, initialize the script using the provided token.
       if (scripts[i].src.includes('green-analytics.js')) {
         const token = scripts[i].getAttribute('data-token')
+        const noInit = scripts[i].getAttribute('no-init')
 
         if (!token) {
           throw new Error(
@@ -275,8 +309,11 @@ if (typeof document !== 'undefined' && typeof window !== 'undefined') {
           )
         }
 
-        // Initialize the framework
-        initGA(token)
+        // If the user needs to provide consent first, it is possible to add no-init to the tag.
+        if (!noInit) {
+          // Initialize the framework
+          initGA(token)
+        }
         break
       }
     }
