@@ -1,3 +1,4 @@
+import stripJs from 'strip-js'
 import { markdown } from './drawdown'
 
 export interface Person {
@@ -137,7 +138,7 @@ export const insertCookiePolicy = async () => {
       const markdownString = (await response.json()).content as string
 
       // Convert the markdown to html and insert it.
-      cookiePolicyInsertionPoint.innerHTML = markdown(markdownString)
+      cookiePolicyInsertionPoint.innerHTML = stripJs(markdown(markdownString))
     }
   } catch (err) {
     console.error('Failed inserting cookie policy', err)
