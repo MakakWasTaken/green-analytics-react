@@ -125,7 +125,7 @@ export const insertCookiePolicy = async () => {
       const response = await fetch(
         'https://green-analytics.com/api/database/cookie-policy',
         {
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
 
