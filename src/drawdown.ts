@@ -12,19 +12,19 @@ export const markdown = (src: string): string => {
   const rx_space = /\t|\r|\uf8ff/g
   const rx_escape = /\\([\\\|`*_{}\[\]()#+\-~])/g
   const rx_hr = /^([*\-=_] *){3,}$/gm
-  const rx_blockquote = /\n *&gt; *(*?)(?=(\n|$){2})/g
+  const rx_blockquote = /\n *> *(.*)(?=(\n|$){2})/g
   const rx_list =
-    /\n( *)(?:[*\-+]|((\d+)|([a-z])|[A-Z])[.)]) +(*?)(?=(\n|$){2})/g
+    /\n( *)(?:[*\-+]|((\d+)|([a-z])|[A-Z])[.)]) +(.*)(?=(\n|$){2})/g
   const rx_listjoin = /<\/(ol|ul)>\n\n<\1>/g
   const rx_highlight =
-    /(^|[^A-Za-z\d\\])(([*_])|(~)|(\^)|(--)|(\+\+)|`)(\2?)([^<]*?)\2\8(?!\2)(?=\W|_|$)/g
-  const rx_code = /\n((```|~~~).*\n?(*?)\n?\2|(( {4}.*?\n)+))/g
-  const rx_link = /((!?)\[(.*?)\]\((.*?)( ".*")?\)|\\([\\`*_{}\[\]()#+\-.!~]))/g
-  const rx_table = /\n(( *\|.*?\| *\n)+)/g
+    /(^|[^A-Za-z\d\\])(([*_])|(~)|(\^)|(--)|(\+\+)|`)(\2?)([^<]*)\2\8(?!\2)(?=\W|_|$)/g
+  const rx_code = /\n((```|~~~).*\n?(.*)\n?\2|(( {4}.*\n)+))/g
+  const rx_link = /((!?)\[(.*)\]\((.*)( ".*")?\)|\\([\\`*_{}\[\]()#+\-.!~]))/g
+  const rx_table = /\n(( *\|.*\| *\n)+)/g
   const rx_thead = /^.*\n( *\|( *[\:\-]+ *\|)* *\n|)/
   const rx_row = /.*\n/g
-  const rx_cell = /\||(.*?[^\\])\|/g
-  const rx_heading = /(?=^|>|\n)([>\s]*?)(#{1,6}) (.*?)( #*)? *(?=\n|$)/g
+  const rx_cell = /\||(.*[^\\])\|/g
+  const rx_heading = /(?=^|>|\n)([>\s]*)(#{1,6}) (.*)( #*)? *(?=\n|$)/g
   const rx_para = /(?=^|>|\n)\s*\n+([^<]+?)\n+\s*(?=\n|<|$)/g
   const rx_stash = /-\d+\uf8ff/g
 
