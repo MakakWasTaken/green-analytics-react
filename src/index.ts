@@ -1,3 +1,6 @@
+import stripJs from 'strip-js'
+import { markdown } from './drawdown'
+
 export interface Person {
   id: string
   name?: string
@@ -122,7 +125,7 @@ export const insertCookiePolicy = async () => {
       const response = await fetch(
         'https://green-analytics.com/api/database/cookie-policy',
         {
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
 
@@ -135,7 +138,7 @@ export const insertCookiePolicy = async () => {
       const markdownString = (await response.json()).content as string
 
       // Convert the markdown to html and insert it.
-      cookiePolicyInsertionPoint.innerHTML = markdown(markdownString)
+      cookiePolicyInsertionPoint.innerHTML = stripJs(markdown(markdownString))
     }
   } catch (err) {
     console.error('Failed inserting cookie policy', err)
