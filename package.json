@@ -12,7 +12,9 @@
     "check": "npm run check:tsc",
     "check:tsc": "tsc -p . --noEmit",
     "lint": "biome format --write . && biome lint --apply . --no-errors-on-unmatched",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "husky install && yarn build",
+    "postinstall": "husky install && yarn build",
+    "prepare": "husky install && yarn build",
     "prepack": "husky install && yarn build"
   },
   "devDependencies": {
