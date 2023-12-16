@@ -207,7 +207,7 @@ export const markdown = (src: string): string => {
   // stash
   replace(rx_stash, (all) => stash[parseInt(all)])
 
-  return src.trim()
+  return tmpSrc.trim()
 }
 
 export default markdown
