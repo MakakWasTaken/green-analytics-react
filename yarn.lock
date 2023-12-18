@@ -1183,7 +1183,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^20.10.5":
   version: 20.10.5
   resolution: "@types/node@npm:20.10.5"
   dependencies:
@@ -1198,15 +1198,6 @@ __metadata:
   dependencies:
     undici-types: "npm:~5.26.4"
   checksum: 174bcf5c79084117528b0fda658b348b5d449e68ac24e462232a871e350b9148377068107f8961aeda981b39d0aee7eec8061698cdb8feef8c8f5de13c79017b
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^20.10.4":
-  version: 20.10.4
-  resolution: "@types/node@npm:20.10.4"
-  dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 2c8b70cba731eb2ae3ae046daa74903bfcbb0e7b9196da767e5895054f6d252296ae7a04fb1dbbcb53bb004c4c658c05eaea2731bc9e2dd9e08f7e88d672f563
   languageName: node
   linkType: hard
 
@@ -2472,7 +2463,7 @@ __metadata:
     "@commitlint/cli": "npm:^18.4.3"
     "@commitlint/config-conventional": "npm:^18.4.3"
     "@types/jest": "npm:^29.5.11"
-    "@types/node": "npm:^20.10.4"
+    "@types/node": "npm:^20.10.5"
     husky: "npm:^8.0.3"
     jest: "npm:^29.7.0"
     jest-junit: "npm:^16.0.0"
