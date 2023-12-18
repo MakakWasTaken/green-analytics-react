@@ -88,7 +88,7 @@ const test = 0;
 
     const markdownString = (await response.json()).content as string
 
-    const htmlString = markdown(stripJs(markdownString))
+    const htmlString = stripJs(markdown(markdownString))
 
     expect(htmlString).toContain('<h1>')
   })
@@ -102,6 +102,8 @@ const test = 0;
     `
     const html = markdown(tableMarkdown)
 
-    expect(html).toContain('<th>Name</th>')
+    expect(html.replace(/\n/g, '')).toEqual(
+      '<table><tr><th>Name</th><th>Description</th><th>Category</th><th>Expiration Time</th><th>Domain</th></tr><tr><td>green-analytics-token</td><td></td><td>MARKETING</td><td>session</td><td>green-analytics.com</td></tr><tr><td>green-analytics-session-id</td><td></td><td>MARKETING</td><td>session</td><td>green-analytics.com</td></tr></table>',
+    )
   })
 })
