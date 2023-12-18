@@ -137,6 +137,9 @@ export const insertCookiePolicy = async () => {
 
       const markdownString = (await response.json()).content as string
 
+      console.log(markdown(markdownString))
+      console.log(stripJs(markdownString))
+
       // Convert the markdown to html and insert it.
       cookiePolicyInsertionPoint.innerHTML = markdown(stripJs(markdownString))
     }
