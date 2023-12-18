@@ -2,7 +2,8 @@ import stripJs from 'strip-js'
 import { markdown } from './drawdown'
 
 // For testing
-export { markdown }
+
+export const markdown1 = (src: string) => markdown(src)
 
 export interface Person {
   id: string
