@@ -23,7 +23,7 @@ export const markdown = (src: string): string => {
   const rx_table = /\n(( *\|.*\| *\n)+)/g
   const rx_thead = /^.*\n( *\|( *[\:\-]+ *\|)* *\n|)/
   const rx_row = /.*\n/g
-  const rx_cell = /\||(.*[^\\])\|/g
+  const rx_cell = /(?<=\|)([^\\|]*(?:\\.[^\\|]*)*)(?=\|)/g
   const rx_heading = /(?=^|>|\n)([>\s]*)(#{1,6}) (.*)( #*)? *(?=\n|$)/g
   const rx_para = /(?=^|>|\n)\s*\n+([^<]+?)\n+\s*(?=\n|<|$)/g
   const rx_stash = /-\d+\uf8ff/g
@@ -186,7 +186,7 @@ export const markdown = (src: string): string => {
                 return ci
                   ? element(
                       sep && !ri ? 'th' : 'td',
-                      unesc(highlight(cell || '')),
+                      unesc(highlight(cell.trim() || '')),
                     )
                   : ''
               }),
