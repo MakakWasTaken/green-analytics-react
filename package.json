@@ -16,7 +16,8 @@
     "postinstall": "yarn build",
     "prepare": "husky install",
     "prepack": "husky install",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "devDependencies": {
     "@biomejs/biome": "1.4.1",
