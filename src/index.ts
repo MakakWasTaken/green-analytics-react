@@ -3,8 +3,6 @@ import { markdown } from './drawdown'
 
 // For testing
 
-export const markdown1 = (src: string) => markdown(src)
-
 export interface Person {
   id: string
   name?: string
