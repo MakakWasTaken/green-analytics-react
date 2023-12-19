@@ -139,12 +139,167 @@ export const insertCookiePolicy = async () => {
 
       const markdownString = (await response.json()).content as string
 
+      const button = document.createElement('button')
+      button.onclick = () => presentCookieBanner(false)
+      button.style.width = '128px'
+      button.style.backgroundColor = '#f5faf5'
+      button.style.borderRadius = '8px'
+      button.innerText = 'Update Cookie Settings'
+
       // Convert the markdown to html and insert it.
       cookiePolicyInsertionPoint.innerHTML = stripJs(markdown(markdownString))
+      cookiePolicyInsertionPoint.appendChild(button)
     }
   } catch (err) {
     console.error('Failed inserting cookie policy', err)
   }
+}
+
+interface ConsentCookie {
+  cookies: { name: string; type: string; accepted: boolean }[]
+  lastUpdated: Date
+}
+
+interface AddCookieBannerHTMLProps {
+  cookiePolicyLink: string
+  cookies: ConsentCookie['cookies']
+}
+
+const addCookieBannerHTML = ({
+  cookiePolicyLink,
+  cookies,
+}: AddCookieBannerHTMLProps) => {
+  const cookieBanner = document.getElementById('green-analytics-cookie-banner')
+  if (cookieBanner) {
+    console.warn('Cookie banner has already been added to the DOM, showing it')
+    cookieBanner.style.display = 'block'
+    return
+  }
+
+  const container = document.createElement('div')
+  container.id = 'green-analytics-cookie-banner'
+  container.style.padding = '8px'
+  container.style.position = 'fixed'
+  container.style.bottom = '0'
+  container.style.display = 'block'
+  container.style.height = '64px'
+
+  // The components needed in the cookie banner are as follows:
+  // Image (Custom if pro plan or paid cookie policy) TODO: Implement this customizability.
+  const img = document.createElement('img')
+  img.src =
+    'https://green-analytics.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo192.181f393e.png&w=48&q=75'
+  img.style.border = '24px'
+  img.style.height = '48px'
+  img.style.width = '48px'
+
+  const gaTitle = document.createElement('a')
+  gaTitle.innerText = 'Green Analytics'
+  gaTitle.style.textDecoration = 'none'
+  gaTitle.style.color = '#346d34'
+
+  container.appendChild(img)
+  container.appendChild(gaTitle)
+
+  // Description
+  const description = document.createElement('div')
+
+  // We only use p to insert to not cause issues with SEO (Accesibility) on the website.
+  const descriptionTitle = document.createElement('p')
+  descriptionTitle.style.fontSize = '26px'
+  descriptionTitle.innerText = 'Cookie Settings'
+
+  const descriptionText = document.createElement('p')
+  descriptionText.innerHTML = `We use cookies to improve your experience of our website. To learn more about our policy please consult the <a href="${cookiePolicyLink}">Cookie Policy</a>`
+
+  description.appendChild(descriptionTitle)
+  description.appendChild(descriptionText)
+
+  container.appendChild(description)
+
+  // Consent buttons
+  const consentContainer = document.createElement('div')
+
+  const d = new Date()
+  d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000)
+
+  const rejectButton = document.createElement('button')
+  // By clicking reject, we reject all cookies that are not marked as essential.
+  // It is the company's responsibility to correctly classify these cookies.
+
+  rejectButton.innerText = 'Reject'
+
+  rejectButton.onclick = () => {
+    // When the user rejects cookies, we create a cookie with all the cookies names of the cookies that were rejected
+    document.cookie = `green-analytics-cookie-consent=${JSON.stringify({
+      cookies: cookies.map((cookie) => ({
+        name: cookie.name,
+        type: cookie.type,
+        accepted: cookie.type === 'ESSENTIAL',
+      })),
+      lastUpdated: new Date(),
+    })};expires=${d.toUTCString()};path=/`
+
+    enforceCookiePolicy()
+  }
+
+  const acceptButton = document.createElement('button')
+
+  acceptButton.innerText = 'Accept'
+  acceptButton.style.color = '#346d34'
+  acceptButton.style.backgroundColor = '#f5faf5'
+
+  acceptButton.onclick = () => {
+    document.cookie = `green-analytics-cookie-consent=${JSON.stringify({
+      cookies: cookies.map((cookie) => ({
+        name: cookie.name,
+        type: cookie.type,
+        accepted: true,
+      })),
+      lastUpdated: new Date(),
+    })};expires=${d.toUTCString()};path=/`
+
+    enforceCookiePolicy()
+  }
+
+  consentContainer.appendChild(rejectButton)
+  consentContainer.appendChild(acceptButton)
+
+  document.appendChild(container)
+}
+
+export const presentCookieBanner = async (auto = true) => {
+  // Present the cookie banner allowing the user to give consent
+  if (auto) {
+    if (!getCookie('green-analytics-cookie-consent')) {
+      // If auto is enabled and the cookie is not present, load the cookie settings from Green Analytics
+      // If the cookie policy is enabled, show it.
+      addCookieBannerHTML({
+        cookiePolicyLink: 'TODO: LOAD FROM SETTINGS',
+        cookies: [], // TODO: LOAD FROM SETTINGS
+      })
+    }
+  } else {
+    // If auto is false, this means that we will force show the cookie consent banner.
+    // This will be used by the cookie policy. Therefore we already know the link to the cookie policy
+
+    const consent = getCookie('green-analytics-cookie-consent')
+    if (consent) {
+      const parsedConsent = JSON.parse(consent) as ConsentCookie
+
+      addCookieBannerHTML({
+        cookiePolicyLink: window.location.href,
+        cookies: parsedConsent.cookies,
+      })
+    } else {
+      // We need to fetch the cookies from the settings, because there is no record of the current cookies
+    }
+  }
+}
+
+const enforceCookiePolicy = () => {
+  // Get all cookies that the user allowed, through their consent.
+  // Remove the cookies that have been disallowed.
 }
 
 export const initGA = async (
@@ -161,8 +316,9 @@ export const initGA = async (
 
     // Check for cookie policy insertion point.
     insertCookiePolicy()
+    presentCookieBanner()
+    enforceCookiePolicy()
 
-    // Send the pageview event
     const event: Event = {
       name: document.title,
       type: 'pageview',
