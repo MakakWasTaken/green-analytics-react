@@ -3,9 +3,14 @@
   "version": "1.1.3",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "repository": "git@github.com:MakakWasTaken/green-analytics-js.git",
+  "repository": {
+    "url": "git+ssh://git@github.com/MakakWasTaken/green-analytics-js.git"
+  },
   "author": "Markus Moltke <markus@green-analytics.com>",
   "license": "MPL-2.0",
+  "files": [
+    "./build/**"
+  ],
   "scripts": {
     "build": "npx tsc -b && yarn browser:build",
     "browser:build": "npx esbuild build/index.js --platform=node --bundle --minify --sourcemap --outfile=build/bundle.js",
