@@ -265,7 +265,7 @@ const addCookieBannerHTML = ({
   consentContainer.appendChild(rejectButton)
   consentContainer.appendChild(acceptButton)
 
-  document.appendChild(container)
+  document.body.appendChild(container)
 }
 
 export const presentCookieBanner = async (auto = true) => {
