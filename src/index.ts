@@ -172,7 +172,7 @@ const addCookieBannerHTML = ({
   const cookieBanner = document.getElementById('green-analytics-cookie-banner')
   if (cookieBanner) {
     console.warn('Cookie banner has already been added to the DOM, showing it')
-    cookieBanner.style.display = 'block'
+    cookieBanner.style.display = 'flex'
     return
   }
 
@@ -256,6 +256,13 @@ const addCookieBannerHTML = ({
       lastUpdated: new Date(),
     })};expires=${d.toUTCString()};path=/`
 
+    // Hide cookie banner
+    const banner = document.getElementById('green-analytics-cookie-banner')
+    if (banner) {
+      banner.style.display = 'none'
+    }
+
+    // Enforce
     enforceCookiePolicy()
   }
 
@@ -275,6 +282,13 @@ const addCookieBannerHTML = ({
       lastUpdated: new Date(),
     })};expires=${d.toUTCString()};path=/`
 
+    // Hide cookie banner
+    const banner = document.getElementById('green-analytics-cookie-banner')
+    if (banner) {
+      banner.style.display = 'none'
+    }
+
+    // Enforce
     enforceCookiePolicy()
   }
 
