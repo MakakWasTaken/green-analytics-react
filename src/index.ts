@@ -202,6 +202,7 @@ const addCookieBannerHTML = ({
 
   const gaPoweredBy = document.createElement('p')
   gaPoweredBy.innerText = 'Powered by'
+  gaPoweredBy.style.margin = '0'
   gaPoweredBy.style.color = '#bbb'
 
   const gaTitle = document.createElement('a')
@@ -246,7 +247,9 @@ const addCookieBannerHTML = ({
   rejectButton.innerText = 'Only Essential'
   rejectButton.style.border = 'none'
   rejectButton.style.borderRadius = '5px'
-  rejectButton.style.height = '20px'
+  rejectButton.style.height = '30px'
+  rejectButton.style.width = '120px'
+  rejectButton.style.margin = '0 8px'
 
   rejectButton.onclick = () => {
     // When the user rejects cookies, we create a cookie with all the cookies names of the cookies that were rejected
@@ -274,9 +277,11 @@ const addCookieBannerHTML = ({
   acceptButton.innerText = 'Accept All'
   acceptButton.style.border = 'none'
   acceptButton.style.borderRadius = '5px'
-  acceptButton.style.height = '20px'
-  acceptButton.style.color = '#346d34'
-  acceptButton.style.backgroundColor = '#f5faf5'
+  acceptButton.style.height = '30px'
+  acceptButton.style.width = '120px'
+  rejectButton.style.margin = '0 8px'
+  acceptButton.style.backgroundColor = '#346d34'
+  acceptButton.style.color = '#f5faf5'
 
   acceptButton.onclick = () => {
     document.cookie = `green-analytics-cookie-consent=${JSON.stringify({
