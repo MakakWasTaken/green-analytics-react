@@ -178,38 +178,54 @@ const addCookieBannerHTML = ({
 
   const container = document.createElement('div')
   container.id = 'green-analytics-cookie-banner'
-  container.style.padding = '8px'
+
+  // Position
   container.style.position = 'fixed'
   container.style.bottom = '0'
-  container.style.display = 'block'
+  container.style.left = '0'
+  container.style.right = '0'
+
+  // Layout
+  container.style.padding = '8px'
+  container.style.display = 'flex'
+  container.style.backgroundColor = '#f5faf5'
   container.style.height = '64px'
+  container.style.alignItems = 'center'
+  container.style.justifyContent = 'space-evenly'
 
   // The components needed in the cookie banner are as follows:
   // Image (Custom if pro plan or paid cookie policy) TODO: Implement this customizability.
-  const img = document.createElement('img')
-  img.src =
-    'https://green-analytics.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo192.181f393e.png&w=48&q=75'
-  img.style.border = '24px'
-  img.style.height = '48px'
-  img.style.width = '48px'
+
+  const gaContainer = document.createElement('div')
+
+  gaContainer.style.marginLeft = '32px'
+
+  const gaPoweredBy = document.createElement('p')
+  gaPoweredBy.innerText = 'Powered by'
+  gaPoweredBy.style.color = '#bbb'
 
   const gaTitle = document.createElement('a')
+  gaTitle.href = 'https://green-analytics.com/'
   gaTitle.innerText = 'Green Analytics'
   gaTitle.style.textDecoration = 'none'
   gaTitle.style.color = '#346d34'
 
-  container.appendChild(img)
-  container.appendChild(gaTitle)
+  gaContainer.appendChild(gaPoweredBy)
+  gaContainer.appendChild(gaTitle)
+
+  container.appendChild(gaContainer)
 
   // Description
   const description = document.createElement('div')
 
   // We only use p to insert to not cause issues with SEO (Accesibility) on the website.
   const descriptionTitle = document.createElement('p')
-  descriptionTitle.style.fontSize = '26px'
+  descriptionTitle.style.fontSize = '18px'
+  descriptionTitle.style.margin = '0'
   descriptionTitle.innerText = 'Cookie Settings'
 
   const descriptionText = document.createElement('p')
+  descriptionText.style.margin = '0'
   descriptionText.innerHTML = `We use cookies to improve your experience of our website. To learn more about our policy please consult the <a href="${cookiePolicyLink}">Cookie Policy</a>`
 
   description.appendChild(descriptionTitle)
@@ -264,6 +280,8 @@ const addCookieBannerHTML = ({
 
   consentContainer.appendChild(rejectButton)
   consentContainer.appendChild(acceptButton)
+
+  container.appendChild(consentContainer)
 
   document.body.appendChild(container)
 }
