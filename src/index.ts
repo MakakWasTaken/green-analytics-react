@@ -243,7 +243,10 @@ const addCookieBannerHTML = ({
   // By clicking reject, we reject all cookies that are not marked as essential.
   // It is the company's responsibility to correctly classify these cookies.
 
-  rejectButton.innerText = 'Reject'
+  rejectButton.innerText = 'Only Essential'
+  rejectButton.style.border = 'none'
+  rejectButton.style.borderRadius = '5px'
+  rejectButton.style.height = '20px'
 
   rejectButton.onclick = () => {
     // When the user rejects cookies, we create a cookie with all the cookies names of the cookies that were rejected
@@ -268,7 +271,10 @@ const addCookieBannerHTML = ({
 
   const acceptButton = document.createElement('button')
 
-  acceptButton.innerText = 'Accept'
+  acceptButton.innerText = 'Accept All'
+  acceptButton.style.border = 'none'
+  acceptButton.style.borderRadius = '5px'
+  acceptButton.style.height = '20px'
   acceptButton.style.color = '#346d34'
   acceptButton.style.backgroundColor = '#f5faf5'
 
