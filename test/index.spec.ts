@@ -1,4 +1,4 @@
-import stripJs from 'strip-js'
+import sanitize from 'sanitize-html'
 import { markdown } from '../src/drawdown'
 
 describe('drawdown', () => {
@@ -67,8 +67,8 @@ const test = 0;
     expect(html).toContain('<h1>')
   })
 
-  test('markdown & stripJs works in combination', () => {
-    const response = markdown(stripJs(markdownString))
+  test('markdown & sanitize-html works in combination', () => {
+    const response = sanitize(markdown(markdownString))
 
     expect(response).toContain('<h1>')
     expect(response).not.toContain('<script>')
@@ -88,7 +88,7 @@ const test = 0;
 
     const markdownString = (await response.json()).content as string
 
-    const htmlString = stripJs(markdown(markdownString))
+    const htmlString = sanitize(markdown(markdownString))
 
     expect(htmlString).toContain('<h1>')
   })
