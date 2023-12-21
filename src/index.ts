@@ -1,4 +1,4 @@
-import stripJs from 'strip-js'
+import sanitize from 'sanitize-html'
 import { markdown } from './drawdown'
 
 // For testing
@@ -147,7 +147,7 @@ export const insertCookiePolicy = async () => {
       button.innerText = 'Update Cookie Settings'
 
       // Convert the markdown to html and insert it.
-      cookiePolicyInsertionPoint.innerHTML = stripJs(markdown(markdownString))
+      cookiePolicyInsertionPoint.innerHTML = sanitize(markdown(markdownString))
       cookiePolicyInsertionPoint.appendChild(button)
     }
   } catch (err) {
