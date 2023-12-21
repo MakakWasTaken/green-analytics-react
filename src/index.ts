@@ -225,9 +225,11 @@ const addCookieBannerHTML = ({
   descriptionTitle.style.margin = '0'
   descriptionTitle.innerText = 'Cookie Settings'
 
+  const url = new URL(cookiePolicyLink)
+
   const descriptionText = document.createElement('p')
   descriptionText.style.margin = '0'
-  descriptionText.innerHTML = `We use cookies to improve your experience of our website. To learn more about our policy please consult the <a href="${cookiePolicyLink}">Cookie Policy</a>`
+  descriptionText.innerHTML = `We use cookies to improve your experience of our website. To learn more about our policy please consult the <a href="${url.href}">Cookie Policy</a>`
 
   description.appendChild(descriptionTitle)
   description.appendChild(descriptionText)
