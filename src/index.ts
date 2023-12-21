@@ -158,6 +158,7 @@ export const insertCookiePolicy = async () => {
 interface ConsentCookie {
   cookies: { name: string; type: string; accepted: boolean }[]
   lastUpdated: Date
+  enabled: boolean
 }
 
 interface AddCookieBannerHTMLProps {
@@ -261,6 +262,7 @@ const addCookieBannerHTML = ({
         type: cookie.type,
         accepted: cookie.type === 'ESSENTIAL',
       })),
+      enabled: true,
       lastUpdated: new Date(),
     })};expires=${d.toUTCString()};path=/`
 
@@ -316,13 +318,106 @@ const addCookieBannerHTML = ({
 export const presentCookieBanner = async (auto = true) => {
   // Present the cookie banner allowing the user to give consent
   if (auto) {
-    if (!getCookie('green-analytics-cookie-consent')) {
+    const consentCookie = getCookie('green-analytics-cookie-consent')
+
+    if (!consentCookie) {
       // If auto is enabled and the cookie is not present, load the cookie settings from Green Analytics
       // If the cookie policy is enabled, show it.
-      addCookieBannerHTML({
-        cookiePolicyLink: 'TODO: LOAD FROM SETTINGS',
-        cookies: [], // TODO: LOAD FROM SETTINGS
-      })
+      const token = getToken()
+
+      const cookiePolicySettings = await fetch(
+        'https://green-analytics.com/api/cookie-policy/settings',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+
+            // Add the token to the header
+            API_TOKEN: token,
+          },
+        },
+      )
+
+      const settings = await cookiePolicySettings.json()
+
+      if (settings.enabled) {
+        addCookieBannerHTML({
+          cookiePolicyLink: settings.cookiePolicyUrl,
+          cookies: settings.cookies,
+        })
+      } else {
+        const d = new Date()
+        // Reload settings once a week
+        d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000)
+
+        // To prevent attempting to load every time.
+        // Will lessen the load on the server.
+        document.cookie = `green-analytics-cookie-consent=${JSON.stringify({
+          enabled: true,
+          lastUpdated: new Date(),
+        })};path=/;expires=${d.toUTCString()}`
+      }
+    } else {
+      // If the cookie is present, and it has last been 1 week since it has been updated, load the settings again
+      // We want to validate that the cookies that have been accepted, are still correct.
+      const parsedCookie = JSON.parse(consentCookie) as ConsentCookie
+
+      const d = new Date()
+      d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000)
+
+      const lastUpdated = new Date(parsedCookie.lastUpdated)
+
+      if (lastUpdated < d) {
+        const token = getToken()
+        // If last updated is older than 1 week.
+        const cookiePolicySettings = await fetch(
+          'https://green-analytics.com/api/cookie-policy/settings',
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+
+              // Add the token to the header
+              API_TOKEN: token,
+            },
+          },
+        )
+
+        const settings = await cookiePolicySettings.json()
+
+        // Check that the cookies are valid.
+        if (settings.enabled) {
+          const prevCookies: string[] = parsedCookie.cookies.map(
+            (cookie) => cookie.name,
+          )
+          const curCookies: string[] = settings.cookies.map(
+            (cookie: any) => cookie.name,
+          )
+
+          for (const cookie of curCookies) {
+            if (!prevCookies.includes(cookie)) {
+              // If the prev cookies do not exist in the previous cookies, show the consent form again
+              addCookieBannerHTML({
+                cookiePolicyLink: settings.cookiePolicyUrl,
+                cookies: settings.cookies,
+              })
+              break
+            }
+          }
+        } else {
+          // If it is still not enabled, postpone the check by 1 week.
+          const d = new Date()
+          // Reload settings once a week
+          d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000)
+
+          // To prevent attempting to load every time.
+          // Will lessen the load on the server.
+          document.cookie = `green-analytics-cookie-consent=${JSON.stringify({
+            enabled: true,
+            lastUpdated: new Date(),
+          })};path=/;expires=${d.toUTCString()}`
+        }
+      }
     }
   } else {
     // If auto is false, this means that we will force show the cookie consent banner.
@@ -345,6 +440,20 @@ export const presentCookieBanner = async (auto = true) => {
 const enforceCookiePolicy = () => {
   // Get all cookies that the user allowed, through their consent.
   // Remove the cookies that have been disallowed.
+
+  const consentCookie = getCookie('green-analytics-cookie-consent')
+
+  if (consentCookie) {
+    const parsedCookie = JSON.parse(consentCookie) as ConsentCookie
+
+    // Delete all cookies that are not enabled.
+    for (const cookie of parsedCookie.cookies) {
+      if (!cookie.accepted) {
+        // Delete the cookie, if it is not accepted.
+        document.cookie = `${cookie.name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`
+      }
+    }
+  }
 }
 
 export const initGA = async (
