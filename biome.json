@@ -10,7 +10,7 @@
     "indentWidth": 2
   },
   "linter": {
-    "ignore": ["old-src/**", "coverage/**", "node_modules/**", "build/**"],
+    "ignore": ["coverage/**", "node_modules/**", "build/**"],
     "enabled": true,
     "rules": {
       "recommended": true,
