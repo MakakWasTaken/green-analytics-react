@@ -371,7 +371,7 @@ export const presentCookieBanner = async (auto = true) => {
         const token = getToken()
         // If last updated is older than 1 week.
         const cookiePolicySettings = await fetch(
-          'https://green-analytics.com/api/cookie-policy/settings',
+          'https://green-analytics.com/api/database/cookie-policy/settings',
           {
             method: 'GET',
             headers: {
