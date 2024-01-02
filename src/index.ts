@@ -326,7 +326,7 @@ export const presentCookieBanner = async (auto = true) => {
       const token = getToken()
 
       const cookiePolicySettings = await fetch(
-        'https://green-analytics.com/api/cookie-policy/settings',
+        'https://green-analytics.com/api/database/cookie-policy/settings',
         {
           method: 'GET',
           headers: {
