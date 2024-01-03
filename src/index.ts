@@ -257,7 +257,7 @@ const addCookieBannerHTML = ({
   rejectButton.onclick = () => {
     // When the user rejects cookies, we create a cookie with all the cookies names of the cookies that were rejected
     document.cookie = `green-analytics-cookie-consent=${JSON.stringify({
-      cookies: cookies.map((cookie) => ({
+      cookies: (cookies ?? []).map((cookie) => ({
         name: cookie.name,
         type: cookie.type,
         accepted: cookie.type === 'ESSENTIAL',
@@ -387,7 +387,7 @@ export const presentCookieBanner = async (auto = true) => {
 
         // Check that the cookies are valid.
         if (settings.enabled) {
-          const prevCookies: string[] = parsedCookie.cookies.map(
+          const prevCookies: string[] = (parsedCookie.cookies ?? []).map(
             (cookie) => cookie.name,
           )
           const curCookies: string[] = settings.cookies.map(
@@ -447,7 +447,7 @@ const enforceCookiePolicy = () => {
     const parsedCookie = JSON.parse(consentCookie) as ConsentCookie
 
     // Delete all cookies that are not enabled.
-    for (const cookie of parsedCookie.cookies) {
+    for (const cookie of (parsedCookie.cookies ?? [])) {
       if (!cookie.accepted) {
         // Delete the cookie, if it is not accepted.
         document.cookie = `${cookie.name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`
