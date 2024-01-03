@@ -447,7 +447,7 @@ const enforceCookiePolicy = () => {
     const parsedCookie = JSON.parse(consentCookie) as ConsentCookie
 
     // Delete all cookies that are not enabled.
-    for (const cookie of (parsedCookie.cookies ?? [])) {
+    for (const cookie of parsedCookie.cookies ?? []) {
       if (!cookie.accepted) {
         // Delete the cookie, if it is not accepted.
         document.cookie = `${cookie.name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`
