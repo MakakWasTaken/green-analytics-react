@@ -1,6 +1,6 @@
 {
   "name": "green-analytics-js",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "repository": {
@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "npx tsc -b && yarn browser:build",
-    "browser:build": "npx esbuild build/index.js --platform=node --bundle --minify --sourcemap --outfile=build/bundle.js",
+    "browser:build": "npx esbuild build/index.js --bundle --minify --sourcemap --outfile=build/bundle.js",
     "check": "npm run check:tsc",
     "check:tsc": "tsc -p . --noEmit",
     "lint": "biome format --write . && biome lint --apply . --no-errors-on-unmatched",
