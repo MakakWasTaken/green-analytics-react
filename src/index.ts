@@ -246,6 +246,7 @@ const addCookieBannerHTML = ({
   d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000)
 
   const rejectButton = document.createElement('button')
+  rejectButton.id = 'green-analytics-cookie-reject'
   // By clicking reject, we reject all cookies that are not marked as essential.
   // It is the company's responsibility to correctly classify these cookies.
 
@@ -257,7 +258,7 @@ const addCookieBannerHTML = ({
   rejectButton.style.width = '120px'
   rejectButton.style.margin = '0 8px'
 
-  rejectButton.onclick = () => {
+  rejectButton.addEventListener('click', () => {
     // When the user rejects cookies, we create a cookie with all the cookies names of the cookies that were rejected
     document.cookie = `green-analytics-cookie-consent=${JSON.stringify({
       cookies: (cookies ?? []).map((cookie) => ({
@@ -277,9 +278,10 @@ const addCookieBannerHTML = ({
 
     // Enforce
     enforceCookiePolicy()
-  }
+  })
 
   const acceptButton = document.createElement('button')
+  acceptButton.id = 'green-analytics-cookie-accept'
 
   acceptButton.innerText = 'Accept All'
   acceptButton.style.cursor = 'pointer'
@@ -291,7 +293,7 @@ const addCookieBannerHTML = ({
   acceptButton.style.backgroundColor = '#346d34'
   acceptButton.style.color = '#f5faf5'
 
-  acceptButton.onclick = () => {
+  acceptButton.addEventListener('click', () => {
     document.cookie = `green-analytics-cookie-consent=${JSON.stringify({
       cookies: cookies.map((cookie) => ({
         name: cookie.name,
@@ -309,7 +311,7 @@ const addCookieBannerHTML = ({
 
     // Enforce
     enforceCookiePolicy()
-  }
+  })
 
   consentContainer.appendChild(rejectButton)
   consentContainer.appendChild(acceptButton)
