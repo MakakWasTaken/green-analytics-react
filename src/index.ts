@@ -190,7 +190,7 @@ const addCookieBannerHTML = ({
   container.style.padding = '8px'
   container.style.display = 'flex'
   container.style.backgroundColor = '#f5faf5'
-  container.style.height = '64px'
+  container.style.gap = '8px'
   container.style.alignItems = 'center'
   container.style.justifyContent = 'space-evenly'
 
@@ -224,12 +224,14 @@ const addCookieBannerHTML = ({
   const descriptionTitle = document.createElement('p')
   descriptionTitle.style.fontSize = '18px'
   descriptionTitle.style.margin = '0'
+  descriptionTitle.style.color = '#111'
   descriptionTitle.innerText = 'Cookie Settings'
 
   const url = new URL(cookiePolicyLink)
 
   const descriptionText = document.createElement('p')
   descriptionText.style.margin = '0'
+  descriptionText.style.color = '#111'
   descriptionText.innerHTML = `We use cookies to improve your experience of our website. To learn more about our policy please consult the <a href="${url.href}">Cookie Policy</a>`
 
   description.appendChild(descriptionTitle)
@@ -248,6 +250,7 @@ const addCookieBannerHTML = ({
   // It is the company's responsibility to correctly classify these cookies.
 
   rejectButton.innerText = 'Only Essential'
+  rejectButton.style.cursor = 'pointer'
   rejectButton.style.border = 'none'
   rejectButton.style.borderRadius = '5px'
   rejectButton.style.height = '30px'
@@ -279,11 +282,12 @@ const addCookieBannerHTML = ({
   const acceptButton = document.createElement('button')
 
   acceptButton.innerText = 'Accept All'
+  acceptButton.style.cursor = 'pointer'
   acceptButton.style.border = 'none'
   acceptButton.style.borderRadius = '5px'
   acceptButton.style.height = '30px'
   acceptButton.style.width = '120px'
-  rejectButton.style.margin = '0 8px'
+  acceptButton.style.margin = '0 8px'
   acceptButton.style.backgroundColor = '#346d34'
   acceptButton.style.color = '#f5faf5'
 
