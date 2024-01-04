@@ -360,7 +360,11 @@ export const presentCookieBanner = async (auto = true) => {
     } else {
       // If the cookie is present, and it has last been 1 week since it has been updated, load the settings again
       // We want to validate that the cookies that have been accepted, are still correct.
-      const parsedCookie = (typeof consentCookie === 'string' ? JSON.parse(consentCookie) : consentCookie) as ConsentCookie
+      const parsedCookie = (
+        typeof consentCookie === 'string'
+          ? JSON.parse(consentCookie)
+          : consentCookie
+      ) as ConsentCookie
 
       const d = new Date()
       d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000)
@@ -425,7 +429,11 @@ export const presentCookieBanner = async (auto = true) => {
 
     const consentCookie = getCookie('green-analytics-cookie-consent')
     if (consentCookie) {
-      const parsedCookie = (typeof consentCookie === 'string' ? JSON.parse(consentCookie) : consentCookie) as ConsentCookie
+      const parsedCookie = (
+        typeof consentCookie === 'string'
+          ? JSON.parse(consentCookie)
+          : consentCookie
+      ) as ConsentCookie
 
       addCookieBannerHTML({
         cookiePolicyLink: window.location.href,
@@ -444,7 +452,11 @@ const enforceCookiePolicy = () => {
   const consentCookie = getCookie('green-analytics-cookie-consent')
 
   if (consentCookie) {
-    const parsedCookie = (typeof consentCookie === 'string' ? JSON.parse(consentCookie) : consentCookie) as ConsentCookie
+    const parsedCookie = (
+      typeof consentCookie === 'string'
+        ? JSON.parse(consentCookie)
+        : consentCookie
+    ) as ConsentCookie
 
     // Delete all cookies that are not enabled.
     for (const cookie of parsedCookie.cookies ?? []) {
