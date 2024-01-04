@@ -360,7 +360,7 @@ export const presentCookieBanner = async (auto = true) => {
     } else {
       // If the cookie is present, and it has last been 1 week since it has been updated, load the settings again
       // We want to validate that the cookies that have been accepted, are still correct.
-      const parsedCookie = JSON.parse(consentCookie) as ConsentCookie
+      const parsedCookie = (typeof consentCookie === 'string' ? JSON.parse(consentCookie) : consentCookie) as ConsentCookie
 
       const d = new Date()
       d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000)
@@ -423,13 +423,13 @@ export const presentCookieBanner = async (auto = true) => {
     // If auto is false, this means that we will force show the cookie consent banner.
     // This will be used by the cookie policy. Therefore we already know the link to the cookie policy
 
-    const consent = getCookie('green-analytics-cookie-consent')
-    if (consent) {
-      const parsedConsent = JSON.parse(consent) as ConsentCookie
+    const consentCookie = getCookie('green-analytics-cookie-consent')
+    if (consentCookie) {
+      const parsedCookie = (typeof consentCookie === 'string' ? JSON.parse(consentCookie) : consentCookie) as ConsentCookie
 
       addCookieBannerHTML({
         cookiePolicyLink: window.location.href,
-        cookies: parsedConsent.cookies,
+        cookies: parsedCookie.cookies,
       })
     } else {
       // We need to fetch the cookies from the settings, because there is no record of the current cookies
@@ -444,7 +444,7 @@ const enforceCookiePolicy = () => {
   const consentCookie = getCookie('green-analytics-cookie-consent')
 
   if (consentCookie) {
-    const parsedCookie = JSON.parse(consentCookie) as ConsentCookie
+    const parsedCookie = (typeof consentCookie === 'string' ? JSON.parse(consentCookie) : consentCookie) as ConsentCookie
 
     // Delete all cookies that are not enabled.
     for (const cookie of parsedCookie.cookies ?? []) {
