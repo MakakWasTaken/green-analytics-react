@@ -24,7 +24,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.5.2",
     "@commitlint/cli": "^18.5.0",
-    "@commitlint/config-conventional": "^18.4.4",
+    "@commitlint/config-conventional": "^18.5.0",
     "@types/jest": "^29.5.11",
     "@types/node": "^20.11.5",
     "@types/sanitize-html": "^2.9.5",
