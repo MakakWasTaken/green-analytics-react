@@ -529,12 +529,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^18.5.0":
-  version: 18.5.0
-  resolution: "@commitlint/config-conventional@npm:18.5.0"
+"@commitlint/config-conventional@npm:^18.6.0":
+  version: 18.6.0
+  resolution: "@commitlint/config-conventional@npm:18.6.0"
   dependencies:
     conventional-changelog-conventionalcommits: "npm:^7.0.2"
-  checksum: ef244dc8cec3e0150a2014621b82fa6d7042d2821b0e4f65712bdcee0678718688878c9e45a8bfe9852c9aef25d6569176734178e4e4aa0e0aeb52a361e50475
+  checksum: 656ad2d64468da3087f46abeaf09574de7b2a649eac14f4710d06cbd3d6a6085aacb0c498a8b2ac86ca66503774344fa3b2cb2070d66eac5a3c0c5adc91e132e
   languageName: node
   linkType: hard
 
@@ -2456,7 +2456,7 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:1.5.3"
     "@commitlint/cli": "npm:^18.5.0"
-    "@commitlint/config-conventional": "npm:^18.5.0"
+    "@commitlint/config-conventional": "npm:^18.6.0"
     "@types/jest": "npm:^29.5.11"
     "@types/node": "npm:^20.11.5"
     "@types/sanitize-html": "npm:^2.9.5"
