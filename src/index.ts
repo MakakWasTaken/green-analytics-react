@@ -111,6 +111,8 @@ const getMobile = () => {
   return userAgent.match(/mobile/)
 }
 
+let pageviewLogged = false
+
 export const insertCookiePolicy = async () => {
   if (typeof document === 'undefined') {
     // We cannot insert the cookie policy if no DOM is found
@@ -524,9 +526,12 @@ export const initGA = async (
       userAgent: navigator.userAgent,
     }
 
-    const response = await logEvent(event, userProperties)
+    if (!pageviewLogged) {
+      pageviewLogged = true
+      const response = await logEvent(event, userProperties)
 
-    return response as GAResponse
+      return response as GAResponse
+    }
   } catch (error) {
     console.error(error)
   }
