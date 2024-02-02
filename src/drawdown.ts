@@ -82,18 +82,7 @@ export const markdown = (src: string): string => {
   const highlight = (src: string): string => {
     return src.replace(
       rx_highlight,
-      (
-        all,
-        _,
-        p1,
-        emp,
-        sub,
-        sup,
-        small,
-        big,
-        p2,
-        content,
-      ) => {
+      (all, _, p1, emp, sub, sup, small, big, p2, content) => {
         return (
           _ +
           element(
@@ -163,12 +152,14 @@ export const markdown = (src: string): string => {
       p5: string,
       p6: string,
     ) => {
-      stash[--si] = p6 ? p6 : p2
+      stash[--si] = p6
+        ? p6
+        : p2
           ? p4
-              ? `<img src="${p4}" alt="${p3}"/>`
-              : p1
-          : `<a href="${p4}">${unesc(highlight(p3))}</a>`;
-      return `${si}\uf8ff`;
+            ? `<img src="${p4}" alt="${p3}"/>`
+            : p1
+          : `<a href="${p4}">${unesc(highlight(p3))}</a>`
+      return `${si}\uf8ff`
     },
   )
 

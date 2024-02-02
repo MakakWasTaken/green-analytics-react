@@ -619,7 +619,13 @@ export const logEvent = async (
           // Add the token to the header
           API_TOKEN: token,
         },
-        body: JSON.stringify({ event, userProperties, sessionId, personId }),
+        body: JSON.stringify({
+          event,
+          website: { url: window.location.origin, ...(event.website ?? {}) },
+          userProperties,
+          sessionId,
+          personId,
+        }),
       },
     )
 
