@@ -1,5 +1,6 @@
 /** @type {import('jest').Config} */
 module.exports = {
+  testEnvironment: 'jsdom',
   transform: {
     '^.+\\.(t|j)sx?$': ['ts-jest'],
   },
@@ -19,5 +20,7 @@ module.exports = {
 
   coveragePathIgnorePatterns: ['<rootDir>/test/.*'], // We don't want to run coverage on our tests.
   testTimeout: 30000,
-  // detectOpenHandles: true,
+  detectOpenHandles: true,
+  automock: false,
+  setupFiles: ['<rootDir>/test/jest.setup.ts'],
 }

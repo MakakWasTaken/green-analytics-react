@@ -49,14 +49,14 @@ const getCookie = (name: string) => {
  * @returns The item from storage
  */
 const getFromStorage = (name: string): string | null => {
-  if (navigator.cookieEnabled) {
+  if (typeof navigator !== 'undefined' && navigator.cookieEnabled) {
     return getCookie(name) || null
   }
   return localStorage.getItem(name) || null
 }
 
 const setInStorage = (name: string, value: string) => {
-  if (navigator.cookieEnabled) {
+  if (typeof navigator !== 'undefined' && navigator.cookieEnabled) {
     document.cookie = `${name}=${value};path=/`
   } else {
     return localStorage.setItem(name, value)
@@ -172,6 +172,9 @@ const addCookieBannerHTML = ({
   cookiePolicyLink,
   cookies,
 }: AddCookieBannerHTMLProps) => {
+  if (typeof document === 'undefined') {
+    return
+  }
   const cookieBanner = document.getElementById('green-analytics-cookie-banner')
   if (cookieBanner) {
     console.warn('Cookie banner has already been added to the DOM, showing it')
@@ -480,7 +483,7 @@ export const initGA = async (
   token: string,
 ): Promise<GAResponse | undefined> => {
   // Check if doNotTrack is enabled, if so cancel the script
-  if (navigator.doNotTrack === '1') {
+  if (typeof navigator !== 'undefined' && navigator.doNotTrack === '1') {
     return
   }
 
@@ -603,7 +606,7 @@ export const logEvent = async (
   event: Event,
   userProperties?: { [key: string]: any },
 ): Promise<GAResponse | undefined> => {
-  if (navigator.doNotTrack === '1') {
+  if (typeof navigator !== 'undefined' && navigator.doNotTrack === '1') {
     return
   }
 
@@ -625,8 +628,10 @@ export const logEvent = async (
           API_TOKEN: token,
         },
         body: JSON.stringify({
-          event,
-          website: { url: window.location.origin, ...(event.website ?? {}) },
+          event: {
+            ...event,
+            website: { url: window.location.origin, ...(event.website ?? {}) },
+          },
           userProperties,
           sessionId,
           personId,
