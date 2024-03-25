@@ -2616,7 +2616,7 @@ __metadata:
     jest-fetch-mock: "npm:^3.0.3"
     jest-junit: "npm:^16.0.0"
     lint-staged: "npm:^15.2.2"
-    sanitize-html: "npm:^2.12.1"
+    sanitize-html: "npm:^2.13.0"
     ts-jest: "npm:^29.1.2"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.4.3"
@@ -4563,9 +4563,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sanitize-html@npm:^2.12.1":
-  version: 2.12.1
-  resolution: "sanitize-html@npm:2.12.1"
+"sanitize-html@npm:^2.13.0":
+  version: 2.13.0
+  resolution: "sanitize-html@npm:2.13.0"
   dependencies:
     deepmerge: "npm:^4.2.2"
     escape-string-regexp: "npm:^4.0.0"
@@ -4573,7 +4573,7 @@ __metadata:
     is-plain-object: "npm:^5.0.0"
     parse-srcset: "npm:^1.0.2"
     postcss: "npm:^8.3.11"
-  checksum: 0169e77845a237d0a0b74d316a861aa13dccfcc55dd5d33d49a37abc77cb60a55d02644094daae3c88f1d1a348ee5ded5ddf20073002535cdaa24291e653d34d
+  checksum: 2a83f7dae19ba60c25b928708538e53bc9b6278e04a6107e162369d9ae06c0ac5f5a7236d24b38a716b19c67bfac137daf4645be145800c199533db7da40ca0d
   languageName: node
   linkType: hard
 
